@@ -1,0 +1,9 @@
+.body {
+    display: flex
+}
+
+.container-login {
+    display: flex;
+    background-color: antiquewhite;
+    padding: 5px;
+}
