@@ -22,7 +22,7 @@ function Register() {
         ).then(response => response.json()).then((data) => {
             console.log(data)
             alert("response : " + data.message)
-            localStorage.setItem('token', JSON.stringify(data.token))
+            localStorage.setItem('token', data.token)
         })
     }
 
