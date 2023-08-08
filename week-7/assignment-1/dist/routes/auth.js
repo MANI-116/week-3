@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,37 +8,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const jwt = require("jsonwebtoken");
-const express = require('express');
-const { authenticateJwt, SECRET } = require("../middleware/");
-const { User } = require("../db");
-const router = express.Router();
-router.post('/signup', (req, res) => __awaiter(this, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+// const jwt = require("jsonwebtoken");
+const express_1 = __importDefault(require("express"));
+// const express = require('express');
+const index_1 = require("../middleware/index");
+// const { authenticateJwt, SECRET } = require("../middleware/");
+const index_2 = require("../db/index");
+// const { User } = require("../db");
+exports.router = express_1.default.Router();
+exports.router.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
-    const user = yield User.findOne({ username });
+    const user = yield index_2.User.findOne({ username });
     if (user) {
         res.status(403).json({ message: 'User already exists' });
     }
     else {
-        const newUser = new User({ username, password });
+        const newUser = new index_2.User({ username, password });
         yield newUser.save();
-        const token = jwt.sign({ id: newUser._id }, SECRET, { expiresIn: '1h' });
+        const token = jsonwebtoken_1.default.sign({ id: newUser._id }, index_1.SECRET, { expiresIn: '1h' });
         res.json({ message: 'User created successfully', token });
     }
 }));
-router.post('/login', (req, res) => __awaiter(this, void 0, void 0, function* () {
+exports.router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
-    const user = yield User.findOne({ username, password });
+    const user = yield index_2.User.findOne({ username, password });
     if (user) {
-        const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: '1h' });
+        const token = jsonwebtoken_1.default.sign({ id: user._id }, index_1.SECRET, { expiresIn: '1h' });
         res.json({ message: 'Logged in successfully', token });
     }
     else {
         res.status(403).json({ message: 'Invalid username or password' });
     }
 }));
-router.get('/me', authenticateJwt, (req, res) => __awaiter(this, void 0, void 0, function* () {
-    const user = yield User.findOne({ _id: req.userId });
+exports.router.get('/me', index_1.authenticateJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield index_2.User.findOne({ _id: req.userId });
     if (user) {
         res.json({ username: user.username });
     }
@@ -45,4 +55,4 @@ router.get('/me', authenticateJwt, (req, res) => __awaiter(this, void 0, void 0,
         res.status(403).json({ message: 'User not logged in' });
     }
 }));
-module.exports = router;
+// module.exports = router

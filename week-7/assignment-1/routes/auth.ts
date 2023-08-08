@@ -7,8 +7,9 @@ import {authenticateJwt, SECRET} from "../middleware/index"
 import {User} from "../db/index"
 // const { User } = require("../db");
 export const router = express.Router();
+import { Request,Response } from 'express';
 
-  router.post('/signup', async (req, res) => {
+  router.post('/signup', async (req:Request, res:Response) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (user) {
@@ -22,7 +23,7 @@ export const router = express.Router();
   });
   
 
-  router.post('/login', async (req, res) => {
+  router.post('/login', async (req:Request, res:Response) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username, password });
     if (user) {
@@ -33,7 +34,7 @@ export const router = express.Router();
     }
   });
 
-    router.get('/me', authenticateJwt, async (req, res) => {
+    router.get('/me', authenticateJwt, async (req:Request, res:Response) => {
       const user = await User.findOne({ _id: req.userId });
       if (user) {
         res.json({ username: user.username });

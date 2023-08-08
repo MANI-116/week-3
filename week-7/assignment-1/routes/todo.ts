@@ -5,8 +5,9 @@ import { authenticateJwt, SECRET } from "../middleware/index"
 // const { Todo } = require("../db");
 import {Todo} from "../db/index"
 export const router = express.Router();
+import { Response,Request } from 'express';
 
-router.post('/todos', authenticateJwt, (req, res) => {
+router.post('/todos', authenticateJwt, (req:Request, res:Response) => {
   const { title, description } = req.body;
   const done = false;
   const userId = req.userId;
@@ -23,7 +24,7 @@ router.post('/todos', authenticateJwt, (req, res) => {
 });
 
 
-router.get('/todos', authenticateJwt, (req, res) => {
+router.get('/todos', authenticateJwt, (req:Request, res:Response) => {
   const userId = req.userId;
 
   Todo.find({ userId })
@@ -35,7 +36,7 @@ router.get('/todos', authenticateJwt, (req, res) => {
     });
 });
 
-router.patch('/todos/:todoId/done', authenticateJwt, (req, res) => {
+router.patch('/todos/:todoId/done', authenticateJwt, (req:Request, res:Response) => {
   const { todoId } = req.params;
   const userId = req.userId;
 
@@ -51,4 +52,4 @@ router.patch('/todos/:todoId/done', authenticateJwt, (req, res) => {
     });
 });
 
-module.exports = router;
+// module.exports = router;
