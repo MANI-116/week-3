@@ -9,13 +9,19 @@ import {User} from "../db/index"
 export const router = express.Router();
 import { Request,Response } from 'express';
 
+type Usertype = {
+  username:string,
+  password:string
+}
+
+
   router.post('/signup', async (req:Request, res:Response) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+    const client:Usertype = req.body;
+    const user = await User.findOne({ username : client.username});
     if (user) {
       res.status(403).json({ message: 'User already exists' });
     } else {
-      const newUser = new User({ username, password });
+      const newUser = new User(client);
       await newUser.save();
       const token = jwt.sign({ id: newUser._id }, SECRET, { expiresIn: '1h' });
       res.json({ message: 'User created successfully', token });
@@ -24,8 +30,8 @@ import { Request,Response } from 'express';
   
 
   router.post('/login', async (req:Request, res:Response) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username, password });
+    const client:Usertype = req.body;
+    const user = await User.findOne(client);
     if (user) {
       const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: '1h' });
       res.json({ message: 'Logged in successfully', token });

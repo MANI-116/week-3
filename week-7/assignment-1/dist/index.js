@@ -22,4 +22,6 @@ app.use("/todo", todo_1.router);
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 });
-mongoose_1.default.connect('mongodb://localhost:27017/courses', { dbName: "courses" });
+mongoose_1.default.connect('mongodb+srv://111manikantav:DxQRLaK82q6FiIfA@cluster0.98dwrzo.mongodb.net/', { dbName: "courses" }).then(() => {
+    console.log("db connected");
+});

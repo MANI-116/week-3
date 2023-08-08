@@ -7,12 +7,14 @@ import {Todo} from "../db/index"
 export const router = express.Router();
 import { Response,Request } from 'express';
 
+
+
 router.post('/todos', authenticateJwt, (req:Request, res:Response) => {
-  const { title, description } = req.body;
+  const {title,description}= req.body;
   const done = false;
   const userId = req.headers.userId;
 
-  const newTodo = new Todo({ title, description, done, userId });
+  const newTodo  = new Todo({ title, description, done, userId });
 
   newTodo.save()
     .then((savedTodo) => {
