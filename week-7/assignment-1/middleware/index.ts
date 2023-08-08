@@ -1,5 +1,6 @@
 
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken"
 const { Response } = require('express');
 const SECRET = 'SECr3t';  // This should be in an environment variable in a real application
 
