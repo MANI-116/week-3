@@ -1,22 +1,17 @@
-//const jwt = require('jsonwebtoken');
-import jwt from 'jsonwebtoken'
-//const { Response } = require('express');
-import { Response } from 'express'
-import { Request } from 'express';
-export const SECRET = 'SECr3t';  // This should be in an environment variable in a real application
 
-type User={
-  id:string;
-}
-export const authenticateJwt = (req:Request, res:Response, next:any) => {
-  const authHeader : string | undefined = req.headers.authorization;
+const jwt = require('jsonwebtoken');
+const { Response } = require('express');
+const SECRET = 'SECr3t';  // This should be in an environment variable in a real application
+
+const authenticateJwt = (req, res, next) => {
+  const authHeader = req.headers.authorization;
   if (authHeader) {
-    const token : string = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1];
     jwt.verify(token, SECRET, (err, user) => {
       if (err) {
         return res.sendStatus(403);
       }
-      req.headers.userId = user.id;
+      req.userId = user.id;
       next();
     });
   } else {
@@ -24,4 +19,7 @@ export const authenticateJwt = (req:Request, res:Response, next:any) => {
   }
 };
 
-
+module.exports = {
+    authenticateJwt,
+    SECRET
+}
