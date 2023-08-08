@@ -1,8 +1,12 @@
-const jwt = require("jsonwebtoken");
-const express = require('express');
-const { authenticateJwt, SECRET } = require("../middleware/");
-const { User } = require("../db");
-const router = express.Router();
+import jwt from 'jsonwebtoken'
+// const jwt = require("jsonwebtoken");
+import express from 'express'
+// const express = require('express');
+import {authenticateJwt, SECRET} from "../middleware/index"
+// const { authenticateJwt, SECRET } = require("../middleware/");
+import {User} from "../db/index"
+// const { User } = require("../db");
+export const router = express.Router();
 
   router.post('/signup', async (req, res) => {
     const { username, password } = req.body;
@@ -38,4 +42,4 @@ const router = express.Router();
       }
     });
 
-  module.exports = router
+  // module.exports = router
