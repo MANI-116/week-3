@@ -35,7 +35,7 @@ import { Request,Response } from 'express';
   });
 
     router.get('/me', authenticateJwt, async (req:Request, res:Response) => {
-      const user = await User.findOne({ _id: req.userId });
+      const user = await User.findOne({ _id: req.headers.userId });
       if (user) {
         res.json({ username: user.username });
       } else {

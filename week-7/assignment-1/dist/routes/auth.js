@@ -47,7 +47,7 @@ exports.router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 }));
 exports.router.get('/me', index_1.authenticateJwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield index_2.User.findOne({ _id: req.userId });
+    const user = yield index_2.User.findOne({ _id: req.headers.userId });
     if (user) {
         res.json({ username: user.username });
     }

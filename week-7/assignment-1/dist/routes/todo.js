@@ -14,7 +14,7 @@ exports.router = express_1.default.Router();
 exports.router.post('/todos', index_1.authenticateJwt, (req, res) => {
     const { title, description } = req.body;
     const done = false;
-    const userId = req.userId;
+    const userId = req.headers.userId;
     const newTodo = new index_2.Todo({ title, description, done, userId });
     newTodo.save()
         .then((savedTodo) => {
@@ -25,7 +25,7 @@ exports.router.post('/todos', index_1.authenticateJwt, (req, res) => {
     });
 });
 exports.router.get('/todos', index_1.authenticateJwt, (req, res) => {
-    const userId = req.userId;
+    const userId = req.headers.userId;
     index_2.Todo.find({ userId })
         .then((todos) => {
         res.json(todos);
@@ -36,7 +36,7 @@ exports.router.get('/todos', index_1.authenticateJwt, (req, res) => {
 });
 exports.router.patch('/todos/:todoId/done', index_1.authenticateJwt, (req, res) => {
     const { todoId } = req.params;
-    const userId = req.userId;
+    const userId = req.headers.userId;
     index_2.Todo.findOneAndUpdate({ _id: todoId, userId }, { done: true }, { new: true })
         .then((updatedTodo) => {
         if (!updatedTodo) {
